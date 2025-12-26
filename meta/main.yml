@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  namespace: vbotka
+  role_name: gcp
+  author: Vladimir Botka
+  description: Ansible gcp collection implementation examples.
+  company: https://botka.info
+  github_branch: master
+  license: BSD
+  min_ansible_version: "2.20"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+        - noble
+        - plucky
+  galaxy_tags:
+    - ubuntu
+    - gcp
