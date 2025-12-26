@@ -3,7 +3,8 @@
   when: ansible_run_tags | length < 2
   block:
 
-    - debug:
+    - name: Debug.
+      ansible.builtin.debug:
         msg: A tag is mandatory. End of play.
 
     - name: End play.

@@ -2,7 +2,7 @@
 - name: Display debug.
   tags: debug
 
-  debug:
+  ansible.builtin.debug:
     msg: |
       gcp_zone: {{ gcp_zone }}
       gcp_project: {{ gcp_project }}

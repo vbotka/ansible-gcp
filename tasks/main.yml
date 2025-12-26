@@ -1,7 +1,12 @@
 ---
-- import_tasks: end-play.yml
-- import_tasks: debug.yml
-- import_tasks: info.yml
+- name: End play if no tag applied.
+  ansible.builtin.import_tasks: end-play.yml
+
+- name: Display debug.
+  ansible.builtin.import_tasks: debug.yml
+
+- name: Display instance info.
+  ansible.builtin.import_tasks: info.yml
 
 #   - name: Creates a GCP Instance
 #     google.cloud.gcp_compute_instance:
