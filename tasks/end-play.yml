@@ -8,9 +8,25 @@
       ansible.builtin.debug:
         var: ansible_run_tags
 
-    - name: Display tessage.
+    - name: Display message.
       ansible.builtin.debug:
         msg: A tag is mandatory. End of play.
+
+    - name: End play.
+      ansible.builtin.meta: end_play
+
+- name: End play if tag(s) unkown.
+  when: ansible_run_tags | difference(gcp_known_tags) | length > 0
+  tags: always
+  block:
+
+    - name: Display ansible_run_tags.
+      ansible.builtin.debug:
+        var: ansible_run_tags
+
+    - name: Display message.
+      ansible.builtin.debug:
+        msg: Unknown tag(s). End of play.
 
     - name: End play.
       ansible.builtin.meta: end_play
