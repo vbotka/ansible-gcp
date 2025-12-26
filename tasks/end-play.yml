@@ -1,0 +1,10 @@
+---
+- name: End play if no tag applied.
+  when: ansible_run_tags | length < 2
+  block:
+
+    - debug:
+        msg: A tag is mandatory. End of play.
+
+    - name: End play.
+      ansible.builtin.meta: end_play

@@ -1,0 +1,24 @@
+---
+- name: Info instance.
+  tags: info-instance
+  block:
+
+    - name: "Gather info for GCP Instance."
+      register: info
+      google.cloud.gcp_compute_instance_info:
+       zone: "{{ gcp_zone }}"
+       project: "{{ gcp_project }}"
+       auth_kind: serviceaccount
+       service_account_file: "{{ gcp_service_account_file }}"
+
+    - name: "Debug gcp_debug={{ gcp_debug }}"
+      debug:
+        var: info
+      when: gcp_debug | bool
+
+    - name: "Display instance info."
+      debug:
+        msg: |
+          {% for host in info.resources | d([]) %}
+          {{ host.id }} {{ host.name }} {{ host.status }}
+          {% endfor %}

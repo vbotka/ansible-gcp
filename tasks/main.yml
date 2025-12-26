@@ -1,0 +1,7 @@
+---
+- import_tasks: end-play.yml
+- import_tasks: debug.yml
+- import_tasks: info.yml
+
+#   - name: Creates a GCP Instance
+#     google.cloud.gcp_compute_instance:
