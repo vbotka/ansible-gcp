@@ -1,6 +1,13 @@
 ---
-gcp_debug: false
+# defaults for gcp
 
-gcp_zone: asia-east1-c
-gcp_project: netng-org
-gcp_service_account_file: files/netng-org-4d0e4dc4d28a.json
+gcp_role_version: 1.0.0
+gcp_supported_distributions:
+  - Ubuntu
+
+gcp_debug: false
+gcp_zone: ''  # e.g. asia-east1-c
+gcp_project: ''  # e.g. my-project
+gcp_service_account_file: ''  # e.g. files/my-project-4d0e4dc4d28a.json
+
+# EOF

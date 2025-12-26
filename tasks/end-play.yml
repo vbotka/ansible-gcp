@@ -1,9 +1,14 @@
 ---
 - name: End play if no tag applied.
-  when: ansible_run_tags | length < 2
+  when: ansible_run_tags | difference(['all']) | length == 0
+  tags: always
   block:
 
-    - name: Debug.
+    - name: Display ansible_run_tags.
+      ansible.builtin.debug:
+        var: ansible_run_tags
+
+    - name: Display tessage.
       ansible.builtin.debug:
         msg: A tag is mandatory. End of play.
 
