@@ -1,24 +1,71 @@
 ---
 - name: Info instance.
-  tags: info-instance
+  tags: [info, info-instance]
   block:
 
-    - name: "Gather info for GCP Instance."
-      register: info
+    - name: Gather info for GCP Instances.
+      register: instance
       google.cloud.gcp_compute_instance_info:
-        zone: "{{ gcp_zone }}"
-        project: "{{ gcp_project }}"
         auth_kind: serviceaccount
         service_account_file: "{{ gcp_service_account_file }}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
 
-    - name: "Debug gcp_debug={{ gcp_debug }}"
-      ansible.builtin.debug:
-        var: info
+    - name: Debug instance.
       when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: instance
 
-    - name: "Display instance info."
+    - name: Display instance selected info.
       ansible.builtin.debug:
         msg: |
-          {% for host in info.resources | d([]) %}
-          {{ host.id }} {{ host.name }} {{ host.status }}
+          {% for i in instance.resources | d([]) %}
+          {{ i.id }} {{ i.name }} {{ i.status }}
+          {% endfor %}
+
+- name: Info disk.
+  tags: [info, info-disk]
+  block:
+
+    - name: Gather info for GCP Disks.
+      register: disk
+      google.cloud.gcp_compute_disk_info:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+
+    - name: Debug disk.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: disk
+
+    - name: Display disk selected info.
+      ansible.builtin.debug:
+        msg: |
+          {% for i in disk.resources | d([]) %}
+          {{ i.id }} {{ i.name }} {{ i.status }}
+          {% endfor %}
+
+- name: Info network.
+  tags: [info, info-network]
+  block:
+
+    - name: Gather info for GCP Networks.
+      register: network
+      google.cloud.gcp_compute_network_info:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        project: "{{ gcp_project }}"
+
+    - name: Debug network.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: network
+
+    - name: Display network selected info.
+      ansible.builtin.debug:
+        msg: |
+          {% for i in network.resources | d([]) %}
+          {{ i.id }} {{ i.name }} {{ i.kind }}
           {% endfor %}

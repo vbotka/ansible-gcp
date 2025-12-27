@@ -5,6 +5,23 @@ vbotka.gcp 1.0 Release Notes
 .. contents:: Topics
 
 
+1.0.1
+=====
+
+Release Summary
+---------------
+Update and add tasks.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+* Update tasks/info.yml
+* Add tasks/create.yml, destroy.yml
+* Add tags, variables, and defaults.
+
+
 1.0.0
 =====
 

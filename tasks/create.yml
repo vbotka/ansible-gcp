@@ -1,0 +1,60 @@
+---
+- name: Create instance.
+  tags: create-instance
+  block:
+
+    - name: Create network.
+      register: network
+      google.cloud.gcp_compute_network:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        project: "{{ gcp_project }}"
+        name: "{{ gcp_network }}"
+        auto_create_subnetworks: 'true'
+
+    - name: Debug network.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: network
+
+    - name: Create disks.
+      register: disk
+      google.cloud.gcp_compute_disk:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        name: "{{ item.name }}-disk"
+        size_gb: "{{ item.size_gb }}"
+        source_image: "{{ item.source_image }}"
+      loop: "{{ gcp_instances }}"
+
+    - name: Debug disk.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: disk
+
+    - name: Create instances.
+      when: disk.results | length == gcp_instances | length
+      register: instance
+      google.cloud.gcp_compute_instance:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        network_interfaces:
+          - network: "{{ network }}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        name: "{{ item.name }}"
+        machine_type: "{{ item.machine_type }}"
+        disks:
+          - auto_delete: 'true'
+            boot: 'true'
+            source: "{{ disk.results[ansible_loop.index0] }}"
+      loop: "{{ gcp_instances }}"
+      loop_control:
+        extended: true
+
+    - name: Debug instance.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: instance

@@ -5,8 +5,11 @@
 - name: Display debug.
   ansible.builtin.import_tasks: debug.yml
 
-- name: Display instance info.
+- name: Display info.
   ansible.builtin.import_tasks: info.yml
 
-#   - name: Creates a GCP Instance
-#     google.cloud.gcp_compute_instance:
+- name: Create.
+  ansible.builtin.import_tasks: create.yml
+
+- name: Destroy.
+  ansible.builtin.import_tasks: destroy.yml
