@@ -1,10 +1,10 @@
 ---
-- name: Create instances.
+- name: Create instance.
   tags: create-instance
   block:
 
     - name: Create disks.
-      register: disks
+      register: disk
       google.cloud.gcp_compute_disk:
         auth_kind: serviceaccount
         service_account_file: "{{ gcp_service_account_file }}"
@@ -15,14 +15,14 @@
         source_image: "{{ item.source_image }}"
       loop: "{{ gcp_instances }}"
 
-    - name: Debug disks.
+    - name: Debug disk.
       when: gcp_debug | bool
       ansible.builtin.debug:
-        var: disks
+        var: disk
 
     - name: Create instances.
-      when: disks.results | length == gcp_instances | length
-      register: instances
+      when: disk.results | length == gcp_instances | length
+      register: instance
       google.cloud.gcp_compute_instance:
         auth_kind: serviceaccount
         service_account_file: "{{ gcp_service_account_file }}"
@@ -33,12 +33,12 @@
         disks:
           - auto_delete: 'true'
             boot: 'true'
-            source: "{{ disks.results[ansible_loop.index0] }}"
+            source: "{{ disk.results[ansible_loop.index0] }}"
       loop: "{{ gcp_instances }}"
       loop_control:
         extended: true
 
-    - name: Debug instances.
+    - name: Debug instance.
       when: gcp_debug | bool
       ansible.builtin.debug:
-        var: instances
+        var: instance
