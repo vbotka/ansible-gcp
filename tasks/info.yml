@@ -1,6 +1,6 @@
 ---
 - name: Info instance.
-  tags: info-instance
+  tags: [info, info-instance]
   block:
 
     - name: Gather info for GCP Instances.
@@ -24,7 +24,7 @@
           {% endfor %}
 
 - name: Info disk.
-  tags: info-disk
+  tags: [info, info-disk]
   block:
 
     - name: Gather info for GCP Disks.
@@ -48,7 +48,7 @@
           {% endfor %}
 
 - name: Info network.
-  tags: info-network
+  tags: [info, info-network]
   block:
 
     - name: Gather info for GCP Networks.
