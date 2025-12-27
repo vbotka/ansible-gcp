@@ -16,6 +16,9 @@ gcp_instances: []
 gcp_known_tags:
   - debug
   - create-instance
+  - destroy
+  - destroy-instance
+  - destroy-network
   - info
   - info-disk
   - info-instance

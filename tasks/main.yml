@@ -11,5 +11,5 @@
 - name: Create.
   ansible.builtin.import_tasks: create.yml
 
-#   - name: Creates a GCP Instance
-#     google.cloud.gcp_compute_instance:
+- name: Destroy.
+  ansible.builtin.import_tasks: destroy.yml

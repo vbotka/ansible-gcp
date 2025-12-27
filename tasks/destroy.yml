@@ -1,0 +1,38 @@
+---
+- name: Destroy instance.
+  tags: [destroy, destroy-instance]
+  block:
+
+    - name: Destroy instances.
+      register: instance
+      google.cloud.gcp_compute_instance:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        name: "{{ item.name }}"
+        state: absent
+      loop: "{{ gcp_instances }}"
+
+    - name: Debug instance.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: instance
+
+- name: Destroy network.
+  tags: [destroy, destroy-network]
+  block:
+
+    - name: Destroy network.
+      register: network
+      google.cloud.gcp_compute_network:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        project: "{{ gcp_project }}"
+        name: "{{ gcp_network }}"
+        state: absent
+
+    - name: Debug network.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: network

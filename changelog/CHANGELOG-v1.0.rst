@@ -18,7 +18,7 @@ Major Changes
 Minor Changes
 -------------
 * Update tasks/info.yml
-* Add tasks/create.yml
+* Add tasks/create.yml, destroy.yml
 * Add tags, variables, and defaults.
 
 
