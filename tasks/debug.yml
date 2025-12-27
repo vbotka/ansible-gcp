@@ -1,9 +1,10 @@
 ---
 - name: Display debug.
   tags: debug
-
   ansible.builtin.debug:
     msg: |
       gcp_zone: {{ gcp_zone }}
       gcp_project: {{ gcp_project }}
       gcp_service_account_file: {{ gcp_service_account_file }}
+      gcp_instances:
+        {{ gcp_instances | to_nice_yaml(indent=2) | indent(2) }}

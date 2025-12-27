@@ -1,0 +1,44 @@
+---
+- name: Create instances.
+  tags: create-instance
+  block:
+
+    - name: Create disks.
+      register: disks
+      google.cloud.gcp_compute_disk:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        name: "{{ item.name }}-disk"
+        size_gb: "{{ item.size_gb }}"
+        source_image: "{{ item.source_image }}"
+      loop: "{{ gcp_instances }}"
+
+    - name: Debug disks.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: disks
+
+    - name: Create instances.
+      when: disks.results | length == gcp_instances | length
+      register: instances
+      google.cloud.gcp_compute_instance:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        name: "{{ item.name }}"
+        machine_type: "{{ item.machine_type }}"
+        disks:
+          - auto_delete: 'true'
+            boot: 'true'
+            source: "{{ disks.results[ansible_loop.index0] }}"
+      loop: "{{ gcp_instances }}"
+      loop_control:
+        extended: true
+
+    - name: Debug instances.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: instances
