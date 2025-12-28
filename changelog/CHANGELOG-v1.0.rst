@@ -5,6 +5,20 @@ vbotka.gcp 1.0 Release Notes
 .. contents:: Topics
 
 
+1.0.2
+=====
+
+Release Summary
+---------------
+Update and add tasks.
+
+Major Changes
+-------------
+
+Minor Changes
+-------------
+
+
 1.0.1
 =====
 
