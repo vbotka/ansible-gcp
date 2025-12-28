@@ -20,9 +20,13 @@
       ansible.builtin.debug:
         msg: |
           {{ gcp_project }} {{ gcp_zone }}
-          {% for i in instance.resources | d([]) %}
+          {% if instance.resources | d([]) | length == 0 %}
+          (none)
+          {% else %}
+          {% for i in instance.resources %}
           {{ i.id }} {{ i.name }} {{ i.status }}
           {% endfor %}
+          {% endif %}
 
 - name: Info disk.
   tags: [info, info-disk]
@@ -45,9 +49,13 @@
       ansible.builtin.debug:
         msg: |
           {{ gcp_project }} {{ gcp_zone }}
-          {% for i in disk.resources | d([]) %}
+          {% if disk.resources | d([]) | length == 0 %}
+          (none)
+          {% else %}
+          {% for i in disk.resources %}
           {{ i.id }} {{ i.name }} {{ i.status }}
           {% endfor %}
+          {% endif %}
 
 - name: Info network.
   tags: [info, info-network]
@@ -69,9 +77,13 @@
       ansible.builtin.debug:
         msg: |
           {{ gcp_project }}
-          {% for i in network.resources | d([]) %}
+          {% if network.resources | d([]) | length == 0 %}
+          (none)
+          {% else %}
+          {% for i in network.resources %}
           {{ i.id }} {{ i.name }} {{ i.kind }}
           {% endfor %}
+          {% endif %}
 
 - name: Info subnetwork.
   tags: [info, info-subnetwork]
@@ -94,6 +106,10 @@
       ansible.builtin.debug:
         msg: |
           {{ gcp_project }} {{ gcp_region }}
-          {% for i in subnetwork.resources | d([]) %}
+          {% if subnetwork.resources | d([]) | length == 0 %}
+          (none)
+          {% else %}
+          {% for i in subnetwork.resources %}
           {{ i.id }} {{ i.name }} {{ i.ipCidrRange }} {{ i.gatewayAddress }}
           {% endfor %}
+          {% endif %}
