@@ -19,6 +19,7 @@
     - name: Display instance selected info.
       ansible.builtin.debug:
         msg: |
+          {{ gcp_project }} {{ gcp_zone }}
           {% for i in instance.resources | d([]) %}
           {{ i.id }} {{ i.name }} {{ i.status }}
           {% endfor %}
@@ -43,6 +44,7 @@
     - name: Display disk selected info.
       ansible.builtin.debug:
         msg: |
+          {{ gcp_project }} {{ gcp_zone }}
           {% for i in disk.resources | d([]) %}
           {{ i.id }} {{ i.name }} {{ i.status }}
           {% endfor %}
@@ -66,6 +68,32 @@
     - name: Display network selected info.
       ansible.builtin.debug:
         msg: |
+          {{ gcp_project }}
           {% for i in network.resources | d([]) %}
           {{ i.id }} {{ i.name }} {{ i.kind }}
+          {% endfor %}
+
+- name: Info subnetwork.
+  tags: [info, info-subnetwork]
+  block:
+
+    - name: Gather info for GCP Subnetworks.
+      register: subnetwork
+      google.cloud.gcp_compute_subnetwork_info:
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_service_account_file }}"
+        project: "{{ gcp_project }}"
+        region: "{{ gcp_region }}"
+
+    - name: Debug subnetwork.
+      when: gcp_debug | bool
+      ansible.builtin.debug:
+        var: subnetwork
+
+    - name: Display subnetwork selected info.
+      ansible.builtin.debug:
+        msg: |
+          {{ gcp_project }} {{ gcp_region }}
+          {% for i in subnetwork.resources | d([]) %}
+          {{ i.id }} {{ i.name }} {{ i.ipCidrRange }} {{ i.gatewayAddress }}
           {% endfor %}

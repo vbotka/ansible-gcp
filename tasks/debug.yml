@@ -3,6 +3,7 @@
   tags: debug
   ansible.builtin.debug:
     msg: |
+      gcp_region: {{ gcp_region }}
       gcp_zone: {{ gcp_zone }}
       gcp_project: {{ gcp_project }}
       gcp_service_account_file: {{ gcp_service_account_file }}

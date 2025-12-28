@@ -6,6 +6,7 @@ gcp_supported_distributions:
   - Ubuntu
 
 gcp_debug: false
+gcp_region: ''  # e.g. asia-east1
 gcp_zone: ''  # e.g. asia-east1-c
 gcp_project: ''  # e.g. my-project
 gcp_service_account_file: ''  # e.g. files/my-project-4d0e4dc4d28a.json
@@ -23,5 +24,6 @@ gcp_known_tags:
   - info-disk
   - info-instance
   - info-network
+  - info-subnetwork
 
 # EOF

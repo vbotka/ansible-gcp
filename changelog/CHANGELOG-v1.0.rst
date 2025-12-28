@@ -17,6 +17,8 @@ Major Changes
 
 Minor Changes
 -------------
+* Add info-subnetwork
+* Add var gcp_region
 
 
 1.0.1

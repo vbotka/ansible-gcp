@@ -10,13 +10,18 @@
 
     - name: Display message.
       ansible.builtin.debug:
-        msg: A tag is mandatory. End of play.
+        msg: |
+          A tag is mandatory. End of play.
+          List of tags:
+            {{ gcp_known_tags | to_nice_yaml(indent=2) | indent(2) }}
 
     - name: End play.
       ansible.builtin.meta: end_play
 
-- name: End play if tag(s) unkown.
-  when: ansible_run_tags | difference(gcp_known_tags) | length > 0
+- name: End play if unkown tag(s).
+  when: unknown_tags | length > 0
+  vars:
+    unknown_tags: "{{ ansible_run_tags | difference(gcp_known_tags) }}"
   tags: always
   block:
 
@@ -26,7 +31,8 @@
 
     - name: Display message.
       ansible.builtin.debug:
-        msg: Unknown tag(s). End of play.
+        msg: |
+          Unknown tag(s): {{ unknown_tags }}. End of play.
 
     - name: End play.
       ansible.builtin.meta: end_play
