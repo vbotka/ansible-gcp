@@ -17,6 +17,8 @@
         var: instance
 
     - name: Display instance selected info.
+      vars:
+        net_query: '[].[networkIP, accessConfigs[].natIP]'
       ansible.builtin.debug:
         msg: |
           {{ gcp_project }} {{ gcp_zone }}
@@ -24,7 +26,7 @@
           (none)
           {% else %}
           {% for i in instance.resources %}
-          {{ i.id }} {{ i.name }} {{ i.status }}
+          {{ i.id }} {{ i.name }} {{ i.status }} {{ i.networkInterfaces | json_query(net_query) }}"
           {% endfor %}
           {% endif %}
 
